@@ -20,12 +20,15 @@ import android.widget.Toast;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.xys.libzxing.zxing.encoding.EncodingUtils;
 
+import scancode.com.example.sgr.scancode.http.CommonModel;
+import scancode.com.example.sgr.scancode.http.HttpUtils;
+
 public class MainActivity extends AppCompatActivity {
     long firstTime;
     String key="shenguoradf";
     private LinearLayout lin_result;
     private TextView result;
-
+    CommonModel commonModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        commonModel=new CommonModel(this);
         result= (TextView) this.findViewById(R.id.result);
 
 
@@ -73,5 +77,32 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    public void getSave(String content){
+        commonModel.getSave(content, new HttpUtils.OnHttpResultListener() {
+            @Override
+            public void onResult(Object result) {
+
+                String tempResult= (String)result;
+                if(tempResult.equals("success")){
+                    Toast.makeText(MainActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                }else if(tempResult.equals("success")){
+                    Toast.makeText(MainActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Toast.makeText(MainActivity.this, "访问失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }
 
