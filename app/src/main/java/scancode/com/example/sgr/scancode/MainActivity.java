@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.xys.libzxing.zxing.activity.CaptureActivity;
 import com.xys.libzxing.zxing.encoding.EncodingUtils;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import scancode.com.example.sgr.scancode.http.CommonModel;
 import scancode.com.example.sgr.scancode.http.HttpUtils;
 
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             if (bundle != null) {
                 String result=bundle.getString("result");
                 this.result.setText("扫描结果："+result);
+                getSave(result);
             }
         }
 
@@ -83,11 +87,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResult(Object result) {
 
-                String tempResult= (String)result;
+                ResponseBody tempBody = (ResponseBody)result;
+
+
+                String tempResult= null;
+                try {
+                    tempResult = tempBody.string().toString();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 if(tempResult.equals("success")){
                     Toast.makeText(MainActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
-                }else if(tempResult.equals("success")){
-                    Toast.makeText(MainActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
+                }else if(tempResult.equals("failure")){
+                    Toast.makeText(MainActivity.this, "条形码已存在", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -99,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable e) {
+                System.out.println(e.toString());
                 Toast.makeText(MainActivity.this, "访问失败", Toast.LENGTH_SHORT).show();
             }
         });

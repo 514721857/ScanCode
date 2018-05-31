@@ -41,7 +41,6 @@ public class BaseModel implements MvpModel {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getServerUrl())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(service);
     }
