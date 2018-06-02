@@ -17,8 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.xys.libzxing.zxing.activity.CaptureActivity;
-import com.xys.libzxing.zxing.encoding.EncodingUtils;
+import com.uuzuche.lib_zxing.activity.CodeUtils;
 
 import java.io.IOException;
 
@@ -32,12 +31,15 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout lin_result;
     private TextView result;
     CommonModel commonModel;
+    public static final int REQUEST_CODE = 111;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        startActivityForResult(new Intent(this, CaptureActivity.class),0);
+        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
+
 
     }
 
@@ -51,21 +53,34 @@ public class MainActivity extends AppCompatActivity {
 
     //扫描二维码
     public void scan(View view) {
-        startActivityForResult(new Intent(this, CaptureActivity.class),0);
+        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
     }
+//        startActivityForResult(new Intent(this, CaptureActivity.class),0);
+//    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode==RESULT_OK){
-            Bundle bundle = data.getExtras();
-            if (bundle != null) {
-                String result=bundle.getString("result");
-                this.result.setText("扫描结果："+result);
-                getSave(result);
+        /**
+         * 处理二维码扫描结果
+         */
+        if (requestCode == REQUEST_CODE) {
+            //处理扫描结果（在界面上显示）
+            if (null != data) {
+                Bundle bundle = data.getExtras();
+                if (bundle == null) {
+                    return;
+                }
+                if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    this.result.setText("扫描结果："+result);
+                    getSave(result);
+                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    Toast.makeText(MainActivity.this, "解析条形码失败", Toast.LENGTH_LONG).show();
+                }
             }
         }
-
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

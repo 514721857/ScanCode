@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/MvpFramework/MvpFramework.iml" filepath="$PROJECT_DIR$/MvpFramework/MvpFramework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ScanCode.iml" filepath="$PROJECT_DIR$/.idea/ScanCode.iml" />
       <module fileurl="file://$PROJECT_DIR$/ScanCode.iml" filepath="$PROJECT_DIR$/ScanCode.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libzxing/libzxing.iml" filepath="$PROJECT_DIR$/libzxing/libzxing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib-zxing/lib-zxing.iml" filepath="$PROJECT_DIR$/lib-zxing/lib-zxing.iml" />
     </modules>
   </component>
 </project>
